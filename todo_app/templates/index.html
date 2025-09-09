@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a5acd;
+            --secondary-color: #f0f4f8;
+            --text-color: #333;
+            --card-bg: #fff;
+            --accent-hover: #5a4ac2;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input[type="text"] {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button[type="submit"] {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .ai-button {
+            background-color: #ffb74d;
+            color: #333;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .ai-button:hover {
+            background-color: #ffa726;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: var(--secondary-color);
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-wrap: break-word;
+            word-break: break-all;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-actions a {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 0.75rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .task-actions a:hover {
+            color: var(--accent-hover);
+            transform: scale(1.1);
+        }
+        
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .no-tasks {
+            color: #888;
+            font-style: italic;
+            font-size: 1rem;
+            margin-top: 2rem;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>
+            <span class="emoji">✅</span> To-Do Manager
+        </h1>
+
+        <form action="/add" method="post" class="input-group">
+            <input type="text" name="task" placeholder="Enter new task" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <button onclick="window.location.href='/generate'" class="ai-button">
+            ✨ AI Generate Task
+        </button>
+
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    {{ task }}
+                    <div class="task-actions">
+                        <a href="/edit/{{ loop.index0 }}">✏️ Edit</a>
+                        <a href="/delete/{{ loop.index0 }}">🗑 Delete</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="no-tasks">No tasks yet!</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
